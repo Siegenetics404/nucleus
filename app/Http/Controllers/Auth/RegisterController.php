@@ -11,7 +11,7 @@ use Inertia\Inertia;
 class RegisterController extends Controller
 {
     // Show the registration form
-    public function showRegistrationForm()
+    public function index()
     {
         return Inertia::render('Auth/Register');
     }

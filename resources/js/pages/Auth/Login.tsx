@@ -1,10 +1,63 @@
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { FormEvent, useEffect, useState } from 'react';
+import { route } from 'ziggy-js';
 
-export default function Login() {
+interface LoginProps {
+    flash?: {
+        success?: string;
+        error?: string;
+    };
+}
+
+export default function Login({ flash }: LoginProps) {
+    const { data, setData, post, processing, errors } = useForm({
+        email: '',
+        password: '',
+    });
+
+    const [authError, setAuthError] = useState<string | null>(null);
+    const [flashMessage, setFlashMessage] = useState<{
+        type: 'success' | 'error' | null;
+        message: string | null;
+    }>({ type: null, message: null });
+
+    // Check for flash messages
+    useEffect(() => {
+        if (flash?.success) {
+            setFlashMessage({
+                type: 'success',
+                message: flash.success,
+            });
+        } else if (flash?.error) {
+            setFlashMessage({
+                type: 'error',
+                message: flash.error,
+            });
+        } else {
+            setFlashMessage({ type: null, message: null });
+        }
+    }, [flash]);
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        setAuthError(null);
+        setFlashMessage({ type: null, message: null });
+
+        post(route('auth.login.store'), {
+            onError: (errors) => {
+                // If we received an authentication error from the backend
+                if (errors.auth) {
+                    setAuthError(errors.auth);
+                }
+            },
+        });
+    };
+
     return (
         <>
             <Head title="Login" />
@@ -13,21 +66,53 @@ export default function Login() {
                     <CardContent className="p-8">
                         <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">Welcome Back!</h1>
 
-                        <form className="space-y-4">
+                        {/* Show flash messages */}
+                        {flashMessage.message && (
+                            <Alert variant={flashMessage.type === 'error' ? 'destructive' : 'default'} className="mb-4">
+                                <AlertDescription>{flashMessage.message}</AlertDescription>
+                            </Alert>
+                        )}
+
+                        {/* Show authentication error if any */}
+                        {authError && (
+                            <Alert variant="destructive" className="mb-4">
+                                <AlertDescription>{authError}</AlertDescription>
+                            </Alert>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="space-y-4">
                             {/* Email Field */}
                             <div className="space-y-2">
                                 <Label htmlFor="email">Gmail</Label>
-                                <Input id="email" type="email" placeholder="yourname@gmail.com" className="w-full" />
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="yourname@gmail.com"
+                                    className="w-full"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                />
+                                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
                             </div>
 
                             {/* Password Field */}
                             <div className="space-y-2">
                                 <Label htmlFor="password">Password</Label>
-                                <Input id="password" type="password" placeholder="••••••••" className="w-full" />
+                                <Input
+                                    id="password"
+                                    type="password"
+                                    placeholder="••••••••"
+                                    className="w-full"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                />
+                                {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
                             </div>
 
                             {/* Submit Button */}
-                            <Button className="mt-4 w-full">Login</Button>
+                            <Button type="submit" className="mt-4 w-full" disabled={processing}>
+                                {processing ? 'Logging in...' : 'Login'}
+                            </Button>
                         </form>
 
                         {/* Divider & Google Auth */}
@@ -40,7 +125,13 @@ export default function Login() {
                             </div>
                         </div>
 
-                        <Button variant="outline" className="w-full">
+                        <Button
+                            variant="outline"
+                            className="w-full"
+                            onClick={() => {
+                                window.location.href = route('auth.google');
+                            }}
+                        >
                             <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
                                 <path
                                     fill="#4285F4"
@@ -65,7 +156,7 @@ export default function Login() {
                         {/* Signup Link */}
                         <p className="mt-4 text-center text-sm text-gray-500">
                             Don't have an account?{' '}
-                            <a href="/signup" className="text-blue-500 hover:underline">
+                            <a href={route('auth.register')} className="text-blue-500 hover:underline">
                                 Sign up
                             </a>
                         </p>

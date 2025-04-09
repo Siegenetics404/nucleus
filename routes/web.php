@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\GuestMiddleware;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,20 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 use App\Http\Controllers\Auth\LoginController;
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('auth.login');
+Route::get('login', [LoginController::class, 'index'])->middleware(GuestMiddleware::class)->name('auth.login');
+Route::post('login', [LoginController::class, 'store'])->name('auth.login.store');
+Route::get('logout', [LoginController::class, 'destroy'])->name('auth.logout');
+
+/*
+|--------------------------------------------------------------------------
+| This controller handles Google Auth Logic
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\Auth\SocialAuthController;
+
+Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +46,8 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('auth.logi
 
 use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('auth.register');
+
+Route::get('register', [RegisterController::class, 'index'])->middleware(GuestMiddleware::class)->name('auth.register');
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +55,38 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 |--------------------------------------------------------------------------
 */
 
-use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Middleware\AdminMiddleware;
 
-Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+Route::middleware([AdminMiddleware::class])->group(function () {
+
+  // Dashboard
+  Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+  // Settings
+  Route::get('admin/settings', [SettingsController::class, 'index'])->name('admin.settings');
+  Route::put('admin/settings/profile', [SettingsController::class, 'updateProfile'])->name('admin.settings.updateProfile');
+  Route::put('admin/settings/password', [SettingsController::class, 'updatePassword'])->name('admin.settings.updatePassword');
+});
+
+/*
+|--------------------------------------------------------------------------
+| This controller handles All User Logic
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\User\UserSettingsController;
+use App\Http\Middleware\UserMiddleware;
+
+Route::middleware([UserMiddleware::class])->group(function () {
+
+  // Dashboard
+  Route::get('dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+  // Settings
+  Route::get('user/settings', [UserSettingsController::class, 'index'])->name('user.settings');
+  Route::put('user/settings/profile', [UserSettingsController::class, 'updateProfile'])->name('user.settings.updateProfile');
+  Route::put('user/settings/password', [UserSettingsController::class, 'updatePassword'])->name('user.settings.updatePassword');
+});
