@@ -31,15 +31,9 @@
     <pre><code>php artisan migrate</code></pre>
   </li>
   
-  <li><strong>Build frontend assets:</strong>
-    <pre><code>npm run dev</code></pre>
-  </li>
-  
-  <li><strong>Start the development server:</strong>
-    <pre><code>php artisan serve</code></pre>
+  <li><strong>Build the project:</strong>
+    <pre><code>composer run dev</code></pre>
   </li>
 </ol>
 
 <p>Your application should now be running. Open your browser and navigate to <code>http://127.0.0.1:8000/</code> to access it.</p>
-
-cd /home/doublebi/public_html/laravel/
