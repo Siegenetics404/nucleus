@@ -1,11 +1,7 @@
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Head, useForm } from '@inertiajs/react';
-import { FormEvent, useEffect, useState } from 'react';
-import { route } from 'ziggy-js';
+import { Head } from '@inertiajs/react';
+import { motion } from 'framer-motion';
+import { GraduationCap } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface LoginProps {
     flash?: {
@@ -15,124 +11,76 @@ interface LoginProps {
 }
 
 export default function Login({ flash }: LoginProps) {
-    const { data, setData, post, processing, errors } = useForm({
-        email: '',
-        password: '',
-    });
-
-    const [authError, setAuthError] = useState<string | null>(null);
     const [flashMessage, setFlashMessage] = useState<{
         type: 'success' | 'error' | null;
         message: string | null;
     }>({ type: null, message: null });
 
-    // Check for flash messages
     useEffect(() => {
         if (flash?.success) {
-            setFlashMessage({
-                type: 'success',
-                message: flash.success,
-            });
+            setFlashMessage({ type: 'success', message: flash.success });
         } else if (flash?.error) {
-            setFlashMessage({
-                type: 'error',
-                message: flash.error,
-            });
+            setFlashMessage({ type: 'error', message: flash.error });
         } else {
             setFlashMessage({ type: null, message: null });
         }
     }, [flash]);
 
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        setAuthError(null);
-        setFlashMessage({ type: null, message: null });
-
-        post(route('auth.login.store'), {
-            onError: (errors) => {
-                // If we received an authentication error from the backend
-                if (errors.auth) {
-                    setAuthError(errors.auth);
-                }
-            },
-        });
-    };
-
     return (
         <>
-            <Head title="Login" />
-            <div className="flex min-h-screen items-center justify-center bg-gray-100 p-6">
-                <Card className="w-full max-w-sm rounded-2xl shadow-xl">
-                    <CardContent className="p-8">
-                        <h1 className="mb-6 text-center text-3xl font-bold text-gray-800">Welcome Back!</h1>
-
-                        {/* Show flash messages */}
-                        {flashMessage.message && (
-                            <Alert variant={flashMessage.type === 'error' ? 'destructive' : 'default'} className="mb-4">
-                                <AlertDescription>{flashMessage.message}</AlertDescription>
-                            </Alert>
-                        )}
-
-                        {/* Show authentication error if any */}
-                        {authError && (
-                            <Alert variant="destructive" className="mb-4">
-                                <AlertDescription>{authError}</AlertDescription>
-                            </Alert>
-                        )}
-
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            {/* Email Field */}
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Gmail</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="yourname@gmail.com"
-                                    className="w-full"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                />
-                                {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
+            <Head title="Sign In" />
+            <div
+                className="flex min-h-screen items-center justify-center bg-[#F8FAFC] p-6"
+                style={{
+                    backgroundImage: 'radial-gradient(circle, rgba(59,130,246,0.07) 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
+                }}
+            >
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="w-full max-w-sm"
+                >
+                    {/* Card */}
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-8 shadow-sm">
+                        {/* Logo + branding */}
+                        <div className="mb-8 flex flex-col items-center text-center">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#3B82F6]">
+                                <GraduationCap size={22} className="text-white" />
                             </div>
-
-                            {/* Password Field */}
-                            <div className="space-y-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    placeholder="••••••••"
-                                    className="w-full"
-                                    value={data.password}
-                                    onChange={(e) => setData('password', e.target.value)}
-                                />
-                                {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password}</p>}
-                            </div>
-
-                            {/* Submit Button */}
-                            <Button type="submit" className="mt-4 w-full" disabled={processing}>
-                                {processing ? 'Logging in...' : 'Login'}
-                            </Button>
-                        </form>
-
-                        {/* Divider & Google Auth */}
-                        <div className="relative my-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t"></div>
-                            </div>
-                            <div className="relative flex justify-center text-sm uppercase">
-                                <span className="bg-white px-2 text-gray-500">Or continue with</span>
-                            </div>
+                            <h1 className="font-display text-2xl font-bold text-[#1E293B]">
+                                Welcome to ChessUno
+                            </h1>
+                            <p className="font-body mt-2 text-sm text-slate-500">
+                                Sign in to access your capstone projects
+                            </p>
                         </div>
 
-                        <Button
-                            variant="outline"
-                            className="w-full"
+                        {/* Flash messages */}
+                        {flashMessage.message && (
+                            <div
+                                className={`mb-6 rounded-xl border px-4 py-3 font-body text-sm ${
+                                    flashMessage.type === 'error'
+                                        ? 'border-red-200 bg-red-50 text-red-700'
+                                        : 'border-green-200 bg-green-50 text-green-700'
+                                }`}
+                            >
+                                {flashMessage.message}
+                            </div>
+                        )}
+
+                        {/* Google Sign In button */}
+                        <motion.button
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => {
                                 window.location.href = route('auth.google');
                             }}
+                            className="group flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl border border-[#E2E8F0] bg-white px-5 py-3.5 font-body text-sm font-medium text-[#1E293B] shadow-sm transition-all duration-200 hover:border-[#3B82F6]/40 hover:bg-[#F8FAFC] hover:shadow-md"
                         >
-                            <svg className="mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+                            {/* Google Logo SVG */}
+                            <svg className="h-5 w-5 shrink-0" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     fill="#4285F4"
                                     d="M24 9.5c3.54 0 6.52 1.28 8.96 3.36l6.64-6.64C34.82 2.02 29.7 0 24 0 14.32 0 6.06 5.74 2.21 13.97l7.81 6.07C12.12 13.34 17.56 9.5 24 9.5z"
@@ -151,17 +99,33 @@ export default function Login({ flash }: LoginProps) {
                                 />
                             </svg>
                             Continue with Google
-                        </Button>
+                        </motion.button>
 
-                        {/* Signup Link */}
-                        <p className="mt-4 text-center text-sm text-gray-500">
-                            Don't have an account?{' '}
-                            <a href={route('auth.register')} className="text-blue-500 hover:underline">
-                                Sign up
-                            </a>
-                        </p>
-                    </CardContent>
-                </Card>
+                        {/* Divider */}
+                        <div className="my-6 flex items-center gap-3">
+                            <div className="h-px flex-1 bg-[#E2E8F0]" />
+                            <span className="font-body text-xs text-slate-400">secure sign-in</span>
+                            <div className="h-px flex-1 bg-[#E2E8F0]" />
+                        </div>
+
+                        {/* Trust indicators */}
+                        <div className="flex items-center justify-center gap-5">
+                            {['Verified Projects', 'Instant Access', 'Secure Checkout'].map((item) => (
+                                <div key={item} className="flex items-center gap-1.5">
+                                    <div className="h-1.5 w-1.5 rounded-full bg-[#3B82F6]" />
+                                    <span className="font-body text-xs text-slate-400">{item}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Back to home */}
+                    <p className="mt-5 text-center font-body text-sm text-slate-500">
+                        <a href={route('home')} className="font-medium text-[#3B82F6] transition-colors hover:text-blue-700">
+                            ← Back to home
+                        </a>
+                    </p>
+                </motion.div>
             </div>
         </>
     );

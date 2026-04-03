@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npx shadcn@latest add \"@aceternity/hero-parallax-demo\")",
+      "Bash(node -e \"require\\('motion/react'\\)\")",
+      "Bash(rm:*)"
+    ]
+  }
+}

@@ -1,32 +1,27 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Head, Link } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
+import Footer from '@/components/landing/footer';
+import HeroSection from '@/components/landing/hero-section';
+import LandingNavbar from '@/components/landing/landing-navbar';
+import type { SharedData } from '@/types';
 
 export default function Welcome() {
+    const { auth } = usePage<SharedData>().props;
+    const isLoggedIn = !!auth?.user;
+    const userRole = (auth?.user as Record<string, unknown>)?.user_role as 'admin' | 'user' | undefined;
+
     return (
         <>
-            <Head title="Welcome">
-                <link rel="preconnect" href="https://fonts.bunny.net" />
-                <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+            <Head title="Capstone Projects Marketplace">
+                <meta
+                    name="description"
+                    content="Browse and buy production-ready capstone projects. Preview demos, purchase instantly, and have it running in minutes."
+                />
             </Head>
 
-            <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-6">
-                <Card className="w-full max-w-md rounded-2xl shadow-xl">
-                    <CardContent className="p-8 text-center">
-                        <h1 className="mb-4 text-4xl font-bold text-gray-800">THIS IS MY PERSONAL BOILERPLATE</h1>
-                        <p className="mb-6 text-lg text-gray-600">Simple and straightforward starter template.</p>
-
-                        <div className="flex justify-center gap-4">
-                            <Button variant="default" asChild>
-                                <Link href={route('auth.login')}>Login</Link>
-                            </Button>
-
-                            <Button variant="outline" asChild>
-                                <Link href={route('auth.register')}>Register</Link>
-                            </Button>
-                        </div>
-                    </CardContent>
-                </Card>
+            <div className="min-h-screen">
+                <LandingNavbar isLoggedIn={isLoggedIn} userRole={userRole} />
+                <HeroSection />
+                <Footer />
             </div>
         </>
     );
