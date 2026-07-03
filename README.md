@@ -37,67 +37,6 @@ The result is an AI that becomes increasingly knowledgeable about its environmen
 
 ---
 
-# Architecture
-
-```text
-                User
-                  │
-                  ▼
-          Chat Interface
-                  │
-                  ▼
-           Conversation Store
-                  │
-                  ▼
-          Memory Extraction AI
-                  │
-                  ▼
-          Memory Transformation
-                  │
-                  ▼
-          Nucleus Memory Store
-                  │
-        ┌─────────┴─────────┐
-        │                   │
-        ▼                   ▼
-  Graph Relationships   Vector Search
-        │                   │
-        └─────────┬─────────┘
-                  ▼
-         Context Assembly Engine
-                  │
-                  ▼
-               LLM Response
-```
-
----
-
-# Memory Lifecycle
-
-```
-Conversation
-      ↓
-Extract
-      ↓
-Classify
-      ↓
-Normalize
-      ↓
-Store
-      ↓
-Link
-      ↓
-Compress
-      ↓
-Retrieve
-      ↓
-Reason
-```
-
-Unlike traditional RAG systems, memory is not simply stored—it is continuously refined into a structured knowledge graph.
-
----
-
 # Current Features
 
 - ✅ Persistent conversation storage
@@ -107,6 +46,8 @@ Unlike traditional RAG systems, memory is not simply stored—it is continuously
 - ✅ Session-aware conversations
 - ✅ Event-driven memory pipeline using n8n
 - ✅ PostgreSQL-backed storage
+
+Unlike traditional RAG systems, memory is not simply stored—it is continuously refined into a structured knowledge graph.
 
 ---
 
@@ -186,6 +127,8 @@ The goal is to become a **cognitive operating system** for AI—one that enables
 
 ---
 
-## License
+## Status
 
-Coming soon.
+🚧 Nucleus is currently under active development.
+
+The architecture, APIs, and memory engine are evolving rapidly and may change before the first stable release.
