@@ -1,39 +1,191 @@
-<h1>React-Laravel-Inertia-Shadcdn</h1>
+# Nucleus
 
-<h2>Prerequisites</h2>
-<p>Ensure you have the following installed on your system:</p>
-<ul>
-  <li><a href="https://getcomposer.org/" target="_blank">Composer</a></li>
-  <li><a href="https://www.php.net/" target="_blank">PHP</a></li>
-  <li><a href="https://nodejs.org/" target="_blank">Node.js & npm</a></li>
-</ul>
+> **A Self-Organizing Cognitive Memory Architecture for Large Language Models**
 
-<h2>Installation Steps</h2>
+Nucleus is a self-organizing memory engine that extends large language models with persistent, graph-connected long-term memory. Instead of retraining the model, it continuously extracts, links, compresses, and retrieves knowledge, allowing AI systems to build an evolving understanding while minimizing token usage.
 
-<ol>
-  <li><strong>Install PHP dependencies:</strong>
-    <pre><code>composer install</code></pre>
-  </li>
-  
-  <li><strong>Copy the environment configuration file:</strong>
-    <pre><code>cp .env.example .env</code></pre>
-  </li>
-  
-  <li><strong>Generate the application key:</strong>
-    <pre><code>php artisan key:generate</code></pre>
-  </li>
-  
-  <li><strong>Install Node.js dependencies:</strong>
-    <pre><code>npm install</code></pre>
-  </li>
-  
-  <li><strong>Run database migrations:</strong>
-    <pre><code>php artisan migrate</code></pre>
-  </li>
-  
-  <li><strong>Build the project:</strong>
-    <pre><code>composer run dev</code></pre>
-  </li>
-</ol>
+---
 
-<p>Your application should now be running. Open your browser and navigate to <code>http://127.0.0.1:8000/</code> to access it.</p>
+## Vision
+
+Modern LLMs excel at reasoning but suffer from a fundamental limitation: **they forget**.
+
+Conversation history is expensive to keep, context windows are finite, and most RAG systems simply retrieve documents without understanding how knowledge evolves over time.
+
+Nucleus aims to solve this by acting as a **cognitive memory layer** between the user and the language model.
+
+Rather than storing every conversation forever, Nucleus continuously:
+
+- Learns from interactions
+- Extracts meaningful knowledge
+- Removes redundant information
+- Builds semantic relationships
+- Retrieves only the memories relevant to the current query
+
+The result is an AI that becomes increasingly knowledgeable about its environment while keeping inference efficient.
+
+---
+
+# Core Principles
+
+- **Persistent Memory** — Knowledge survives across conversations.
+- **Self-Organizing** — Memories evolve instead of accumulating endlessly.
+- **Relationship-Based** — Memories form connected knowledge rather than isolated records.
+- **Token Efficient** — Retrieve only what is relevant.
+- **Model Agnostic** — Works with local and cloud-hosted LLMs.
+- **Continuous Learning** — Improves without retraining the underlying model.
+
+---
+
+# Architecture
+
+```text
+                User
+                  │
+                  ▼
+          Chat Interface
+                  │
+                  ▼
+           Conversation Store
+                  │
+                  ▼
+          Memory Extraction AI
+                  │
+                  ▼
+          Memory Transformation
+                  │
+                  ▼
+          Nucleus Memory Store
+                  │
+        ┌─────────┴─────────┐
+        │                   │
+        ▼                   ▼
+  Graph Relationships   Vector Search
+        │                   │
+        └─────────┬─────────┘
+                  ▼
+         Context Assembly Engine
+                  │
+                  ▼
+               LLM Response
+```
+
+---
+
+# Memory Lifecycle
+
+```
+Conversation
+      ↓
+Extract
+      ↓
+Classify
+      ↓
+Normalize
+      ↓
+Store
+      ↓
+Link
+      ↓
+Compress
+      ↓
+Retrieve
+      ↓
+Reason
+```
+
+Unlike traditional RAG systems, memory is not simply stored—it is continuously refined into a structured knowledge graph.
+
+---
+
+# Current Features
+
+- ✅ Persistent conversation storage
+- ✅ Automatic memory extraction
+- ✅ Long-term memory database
+- ✅ Structured memory classification
+- ✅ Session-aware conversations
+- ✅ Event-driven memory pipeline using n8n
+- ✅ PostgreSQL-backed storage
+
+---
+
+# Planned Features
+
+## Phase 1
+
+- [ ] Memory deduplication
+- [ ] Memory updating
+- [ ] Importance scoring
+- [ ] Automatic memory decay
+- [ ] Conflict detection
+
+## Phase 2
+
+- [ ] Embedding generation
+- [ ] Semantic vector search
+- [ ] Graph-based memory relationships
+- [ ] Memory clustering
+- [ ] Knowledge compression
+
+## Phase 3
+
+- [ ] Autonomous memory synthesis
+- [ ] Multi-agent shared memory
+- [ ] Temporal reasoning
+- [ ] Episodic vs semantic memory
+- [ ] Cognitive planning engine
+
+---
+
+# Technology Stack
+
+- **n8n** — Workflow orchestration
+- **PostgreSQL** — Persistent memory storage
+- **Local LLMs** (Qwen, Llama, etc.) or cloud providers
+- **Embedding Model** _(planned)_
+- **Vector Database** _(planned)_
+- **Graph Database** _(planned)_
+
+---
+
+# Project Structure
+
+```
+Nucleus
+│
+├── Chat Pipeline
+│   ├── Conversation Storage
+│   ├── Context Assembly
+│   └── Response Generation
+│
+├── Memory Engine
+│   ├── Extraction
+│   ├── Classification
+│   ├── Transformation
+│   └── Persistence
+│
+├── Retrieval Engine
+│   ├── Semantic Search
+│   ├── Graph Traversal
+│   └── Context Ranking
+│
+└── Future Cognitive Layer
+    ├── Planning
+    ├── Reflection
+    └── Self-Improvement
+```
+
+---
+
+# Long-Term Goal
+
+Nucleus is not intended to be another RAG framework.
+
+The goal is to become a **cognitive operating system** for AI—one that enables language models to develop persistent, structured, and evolving knowledge over time while remaining efficient, interpretable, and model-independent.
+
+---
+
+## License
+
+Coming soon.
