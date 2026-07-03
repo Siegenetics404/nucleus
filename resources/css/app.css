@@ -81,10 +81,10 @@
 
 :root {
     /* Brand color system */
-    --brand-primary: #1E293B;
-    --brand-accent: #3B82F6;
-    --brand-background: #F8FAFC;
-    --brand-secondary: #E2E8F0;
+    --brand-primary: #1e293b;
+    --brand-accent: #3b82f6;
+    --brand-background: #f8fafc;
+    --brand-secondary: #e2e8f0;
 
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -164,4 +164,27 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* Custom themed scrollbar */
+.themed-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #26262f #111116;
+}
+
+.themed-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.themed-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.themed-scrollbar::-webkit-scrollbar-thumb {
+    background: #26262f;
+    border-radius: 999px;
+}
+
+.themed-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ff7a45;
 }

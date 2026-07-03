@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Project;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -52,6 +53,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'projects' => fn(): array => $request->user()
+                ? $request->user()->projects()->select('id', 'name', 'slug')->orderBy('name')->get()->toArray()
+                : [],
             'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

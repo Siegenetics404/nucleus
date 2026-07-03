@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserSettingsController;
 use App\Http\Middleware\GuestMiddleware;
@@ -44,4 +45,16 @@ Route::middleware(UserMiddleware::class)->group(function () {
   Route::get('user/settings', [UserSettingsController::class, 'index'])->name('user.settings');
   Route::put('user/settings/profile', [UserSettingsController::class, 'updateProfile'])->name('user.settings.updateProfile');
   Route::put('user/settings/password', [UserSettingsController::class, 'updatePassword'])->name('user.settings.updatePassword');
+
+  Route::post('/dashboard/projects', [ProjectController::class, 'store'])
+    ->name('user.dashboard.projects.store');
+
+  Route::put('/dashboard/projects/{project:id}', [ProjectController::class, 'update'])
+    ->name('user.dashboard.projects.update');
+
+  Route::get('/dashboard/{project:slug}', [ProjectController::class, 'show'])
+    ->name('user.dashboard.project');
+
+  Route::delete('/dashboard/projects/{project:id}', [ProjectController::class, 'destroy'])
+    ->name('user.dashboard.projects.destroy');
 });
