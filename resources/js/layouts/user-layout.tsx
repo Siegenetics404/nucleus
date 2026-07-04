@@ -36,7 +36,7 @@ const NAV_ITEMS: NavItem[] = [{ key: 'explorer', label: 'Explorer', icon: Folder
 export default function UserLayout({ children }: UserLayoutProps) {
     const { url, props } = usePage<PageProps>();
     const user = props.auth.user;
-    const [panelOpen, setPanelOpen] = useState(true);
+    const [panelOpen, setPanelOpen] = useState(false);
     const [activeKey, setActiveKey] = useState('explorer');
 
     useEffect(() => {
