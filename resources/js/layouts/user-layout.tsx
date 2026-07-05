@@ -9,15 +9,22 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Link, usePage } from '@inertiajs/react';
-import { Folder, type LucideIcon, Settings } from 'lucide-react';
+import { ChevronRight, Folder, type LucideIcon, Settings } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface User {
     name: string;
     email: string;
 }
+interface Project {
+    id: number;
+    name: string;
+    slug: string;
+}
+
 interface PageProps {
     auth: { user: User };
+    activeProject?: Project;
     [key: string]: unknown;
 }
 interface UserLayoutProps {
@@ -36,6 +43,7 @@ const NAV_ITEMS: NavItem[] = [{ key: 'explorer', label: 'Explorer', icon: Folder
 export default function UserLayout({ children }: UserLayoutProps) {
     const { url, props } = usePage<PageProps>();
     const user = props.auth.user;
+    const activeProject = props.activeProject;
     const [panelOpen, setPanelOpen] = useState(false);
     const [activeKey, setActiveKey] = useState('explorer');
 
@@ -151,8 +159,24 @@ export default function UserLayout({ children }: UserLayoutProps) {
 
             {/* Main content */}
             <div className="flex flex-1 flex-col overflow-hidden">
-                <header className="flex h-16 items-center justify-end border-b border-[#1E1E26] bg-[#0B0B0F] px-4 md:px-6">
-                    <span className="font-['Space_Grotesk'] text-sm text-[#C8C8D0] md:hidden">{user.name}</span>
+                <header className="flex h-16 items-center justify-between border-b border-[#1E1E26] bg-[#0B0B0F] px-4 md:px-6">
+                    <div className="flex items-center gap-1.5 text-sm">
+                        <Link
+                            href={route('user.dashboard')}
+                            className="flex items-center gap-1.5 font-['Hanken_Grotesk'] font-medium text-[#9A9AA5] transition-colors hover:text-white"
+                        >
+                            <Folder size={14} />
+                            Explorer
+                        </Link>
+                        {activeProject && (
+                            <>
+                                <ChevronRight size={14} className="text-[#4A4A54]" />
+                                <span className="max-w-[200px] truncate font-['Zilla_Slab'] font-medium text-white">{activeProject.name}</span>
+                            </>
+                        )}
+                    </div>
+
+                    <span className="font-['Hanken_Grotesk'] text-sm text-[#C8C8D0] md:hidden">{user.name}</span>
                     <div className="flex items-center gap-3 md:hidden">
                         <Avatar className="h-8 w-8">
                             <AvatarImage src="/api/placeholder/32/32" alt={user.name} />
